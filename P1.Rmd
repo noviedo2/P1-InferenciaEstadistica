@@ -9,22 +9,105 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+# Ejercicio 1
+```{r Librerias, message=FALSE, include = FALSE}
+library(arulesCBA)
+library(gt)
+library(ggplot2)
+library(knitr)
+library(skimr)
+library(summarytools)
+library(dplyr)
+library(tidyverse)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r Importar datos, include = FALSE}
+data("Mushroom")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Tamaño de los datos
+```{r}
+size <- dim(Mushroom)
+n_obs <- size[1]
+n_var <- size[2]
+```
+Este dataset, está compuesto de `r n_obs` observaciones y `r n_var` variables.
+
+## Muestra del data set
+Dado que tenemos un dataset con más de 1000 observaciones, hay que coger una muestra para hacer el análisis.
+
+```{r}
+set.seed(1234)
+mushroom.muestra <- Mushroom[sample(1:n_obs, 1000, TRUE), ]
+```
+
+La muestra del dataset Mushroom es el siguiente:
+`r mushroom.muestra`
+
+## Tipo de variables
+```{r}
+# Varialbes discretas
+var_discreta <- length(which(sapply(Mushroom, class) == 'factor'))
+
+# Variables continuas
+var_continuas <- length(which(sapply(Mushroom, class) != 'factor'))
+
+# Categorías de las variables
+lapply(Mushroom, function(x) if(is.factor(x) | is.character(x)) unique(as.character(x)) else NULL)
+
+# Variables tipo texto
+i = 0
+for (var in sapply(Mushroom, is.character)){
+  if (var == TRUE){
+    i = i + 1
+  }
+} 
+```
+
+Estudiando el tipo de variables que tiene este dataset, sabemos que hay `r var_discreta` variables discretas y `r var_continuas` variables continuas. De todas estas variables hay `r i` variables tipo texto. Y las categorias de las variables son:  
+
+
+## Variables irrelevantes
+```{r echo = FALSE}
+summary(Mushroom)
+```
+
+# Ejercicio 2
+```{r}
+summary(mushroom.muestra)
+```
+
+Dado que no hay variables continuas y todas son de tipo factor, solo podemos saber la fecuencia de la muestra:
+```{r}
+freq(mushroom.muestra)
+```
+
+Sin embargo hay varias varialbes que se pueden volver continuas. Como `RingNumber`o `RintType`. Tambien pueden ser booleanas como `Bruises`.
+```{r}
+mushroom.muestra$RingNumber.Numeric <- ifelse(mushroom.muestra$RingNumber == 'none', 0, 
+                                       ifelse(mushroom.muestra$RingNumber == 'one', 1,
+                                       ifelse(mushroom.muestra$RingNumber == 'two', 2, NA)))
+
+mushroom.muestra$RingType.Numeric <- ifelse(mushroom.muestra$RingType == 'none', 0, 
+                                     ifelse(mushroom.muestra$RingType == 'evanesent', 1,
+                                     ifelse(mushroom.muestra$RingType == 'flaring', 2,
+                                     ifelse(mushroom.muestra$RingType == 'large',3,
+                                     ifelse(mushroom.muestra$RingType == 'pendant',4, NA)))))
+
+mushroom.muestra$Bruises.bool <- ifelse(mushroom.muestra$Bruises == 'no', FALSE, 
+                                       ifelse(mushroom.muestra$Bruises == 'bruise', TRUE, NA))
+summary(mushroom.muestra)
+
+```
+
+
+## Ejercicio 3
+```{r}
+table(mushroom.muestra$CapColor)
+
+ggplot(data = mushroom.muestra) +
+  geom_bar(mapping = aes(x = CapColor))
+
+mushroom.muestra%>%
+  count(CapColor)
