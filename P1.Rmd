@@ -13,12 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # Ejercicio 1
 ```{r Librerias, message=FALSE, include = FALSE}
 library(arulesCBA)
-library(gt)
 library(ggplot2)
-library(knitr)
-library(skimr)
 library(summarytools)
-library(dplyr)
 library(tidyverse)
 ```
 
