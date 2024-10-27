@@ -188,8 +188,7 @@ print(tabla_frecuencias_ordenada4)
 Representacion de `GillColor.numeri` repecto a su frecuencia
 ```{r}
 ggplot(data = mushroom.muestra) +
-  geom_histogram(mapping = aes(x = GillColor.numeric), binwidth = 1) +
-  geom_bar(fill = "gold3") 
+  geom_histogram(mapping = aes(x = GillColor.numeric), binwidth = 1) 
 ```
 
 Si representamos su densidad tenemos la siguiente gráfica:
