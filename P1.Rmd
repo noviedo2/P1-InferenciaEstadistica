@@ -22,6 +22,18 @@ library(tidyverse)
 data("Mushroom")
 ```
 
+
+Importamos los datos y mostramos los primeros y últimos datos en nuestra muestra para familiarizarnos con ellos.
+
+```{r}
+head(Mushroom)
+```
+
+```{r}
+tail(Mushroom)
+```
+
+
 ## Tamaño de los datos
 ```{r}
 size <- dim(Mushroom)
