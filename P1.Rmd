@@ -110,7 +110,7 @@ summary(mushroom.muestra)
 ```
 
 
-## Ejercicio 3
+# Ejercicio 3
 Vamos a estudiar la variable `Spore` del dataset.
 ```{r}
 tabla_frecuencias_type <- mushroom.muestra |>
@@ -155,7 +155,7 @@ ggplot(data = mushroom.muestra) +
 ```
 
 
-## Ejercicio 4
+# Ejercicio 4
 Como no tenermos varaibles continuas, voy a pasar a caracter la vaeiable de `GillColor`, los números que van con los distintos colores no tiene ninguna relacion, estan puestos por orden.
 
 ```{r}
@@ -258,7 +258,7 @@ Este histograma muestra la distribucion de la variable "GillColor.numeric".
 La curva negra superpuesta al histograma es una estimación de la densidad de probabilidad de la distribución de la variable transformada y nos permite estimar la probabilidad de que la variable tome  un valor determinado.
 
 
-#Ejercicio 6
+# Ejercicio 6
 
 ```{r}
 
