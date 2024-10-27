@@ -305,3 +305,38 @@ Este resultado nos indica que estamos al 95% seguros de que la media de nuestros
 Para tranformarlos a escala real solo tendríamos que deshacer el logaritmo ( e^1.667 = 5.30 y e^1.743 = 5.70) lo que significa que estamos al 95% seguros de que la media se encuentra entre 5.3 y 5.7
 En este caso observamos que el intervalo [5.3 , 5.7] es estrecho por lo que tenemos una buena estimación de la media.
 
+# Ejercicio 8
+Teniendo `GillColor.numeric` como variabe continua, se va a representar en base al `habitat` en el que se encuenta cada tipo de hongo.
+
+```{r}
+ggplot(mushroom.muestra, aes(x = log(GillColor.numeric), colour = Habitat)) +
+  geom_density(lwd=2, linetype=1)
+```
+
+Relacion entre estas dos variables.
+```{r}
+df = mushroom.muestra %>% 
+      select(GillColor.numeric,Habitat)%>%
+      mutate(log.GillColor.numeric=log(GillColor.numeric))
+```
+
+Comparando sus boxplots obtenemos
+```{r}
+ggplot(df, aes(Habitat, log.GillColor.numeric)) +
+        geom_boxplot()
+```
+
+Tabla de frecuencias
+```{r}
+kable(table(mushroom.muestra$GillColor.numeric, mushroom.muestra$Habitat))
+
+kable(prop.table(table(mushroom.muestra$GillColor.numeric, mushroom.muestra$Habitat)), digits = 6)
+```
+
+Datos sobre el conjunto de las dos variables
+```{r}
+lineal_1 <- mushroom.muestra |> 
+  select(GillColor.numeric, Habitat) |> 
+  with(lm(GillColor.numeric ~ Habitat))  
+summary(lineal_1)
+```
