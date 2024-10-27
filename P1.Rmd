@@ -16,6 +16,7 @@ library(arulesCBA)
 library(ggplot2)
 library(summarytools)
 library(tidyverse)
+library(knitr)
 ```
 
 ```{r Importar datos, include = FALSE}
@@ -81,7 +82,7 @@ for (var in sapply(Mushroom, is.character)){
 } 
 ```
 
-Estudiando el tipo de variables que tiene este dataset, sabemos que hay `r var_discreta` variables discretas y `r var_continuas` variables continuas. De todas estas variables hay `r i` variables tipo texto. Y las categorias de las variables son:  
+Estudiando el tipo de variables que tiene este dataset, sabemos que hay `r var_discreta` variables discretas y `r var_continuas` variables continuas. De todas estas variables hay `r i` variables tipo texto.
 
 
 ## Variables irrelevantes
@@ -306,7 +307,6 @@ print(paste("Intervalo de confianza del 95% para la media:", round(ic_lower, 3),
 
 ```
 
-```
 Este resultado nos indica que estamos al 95% seguros de que la media de nuestros valores tras la transformacion logarítmica se encuentra entre 1.667 y 1.743
 Para tranformarlos a escala real solo tendríamos que deshacer el logaritmo ( e^1.667 = 5.30 y e^1.743 = 5.70) lo que significa que estamos al 95% seguros de que la media se encuentra entre 5.3 y 5.7
 En este caso observamos que el intervalo [5.3 , 5.7] es estrecho por lo que tenemos una buena estimación de la media.
