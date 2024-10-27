@@ -203,3 +203,93 @@ Ahora representamos su distribución.
 ggplot(data = mushroom.muestra) +
   geom_histogram(mapping = aes(x = log(GillColor.numeric)), binwidth = .1)
 ```
+
+
+# Ejercicio 5
+
+Antes de obtener el EVM, filtramos valores nulos de nuestros datos ya que no representan una parte relevante de la muestra  y mantenemos la integridad de nuestra muestra sin modificar los valores. 
+
+```{r}
+
+mushroom_filtrado <- mushroom.muestra %>%
+  filter(GillColor.numeric > 0) # Filtrar las observaciones con valores cero en `GillColor.numeric`
+
+# transformación logarítmica
+mushroom_filtrado$GillColor.log <- log(mushroom_filtrado$GillColor.numeric)
+
+# EMV de la media y desviación estándar
+emv_media_log <- mean(mushroom_filtrado$GillColor.log)
+emv_desv_log <- sd(mushroom_filtrado$GillColor.log)
+
+print(paste("Estimador de máxima verosimilitud de la media (EMV) de log(GillColor.numeric):", emv_media_log))
+print(paste("Desviación estándar de log(GillColor.numeric):", emv_desv_log))
+
+```
+
+
+Antes de obtener el EVM, filtramos valores nulos de nuestros datos ya que no representan una parte relevante de la muestra  y mantenemos la integridad de nuestra muestra sin modificar los valores. 
+
+
+```{r}
+
+# Comparación gráfica
+
+ggplot(mushroom_filtrado, aes(x = GillColor.log)) +
+  geom_histogram(aes(y = ..density..), binwidth = 0.1, fill = "lightgreen", alpha = 0.7) +
+  stat_function(fun = dnorm, args = list(mean = emv_media_log, sd = emv_desv_log))+
+  xlab("log(GillColor.numeric)") +
+  ylab("Densidad")
+
+```
+
+Este histograma muestra la distribucion de la variable "GillColor.numeric".
+La curva negra superpuesta al histograma es una estimación de la densidad de probabilidad de la distribución de la variable transformada y nos permite estimar la probabilidad de que la variable tome  un valor determinado.
+
+
+#Ejercicio 6
+
+```{r}
+
+mushroom_filtrado <- mushroom.muestra %>%
+  filter(GillColor.numeric > 0)
+
+#transformación logarítmica
+mushroom_filtrado$GillColor.log <- log(mushroom_filtrado$GillColor.numeric)
+
+#media y varianza de la muestra con el método de los momentos
+mom_media_log <- mean(mushroom_filtrado$GillColor.log)  # Media muestral
+mom_varianza_log <- var(mushroom_filtrado$GillColor.log) #Varianza muestral
+
+print(paste("Estimador de la media (Momento 1) de log(GillColor.numeric):", mom_media_log))
+print(paste("Estimador de la varianza (Momento 2) de log(GillColor.numeric):", mom_varianza_log))
+
+```
+
+
+Como podemos observar, nuestro estimador de la media 𝜇es igual a 1.7048, este valor es obtenido tras aplicar la transformacion logaritmica por lo que en nuesra escala original tendrían un valor medio de 4,93.
+
+Nuestro estimador de varianza σ^2 es igual a 0.3053. Este valor mide la dispersion de los datos, al no ser elevado, nos sugiere que nuestros datos están cerca de la media.
+
+
+
+```{r}
+
+n <- nrow(mushroom_filtrado) # Calculamos tamaño de la muestra
+
+# Nivel de confianza del 95%
+z <- qnorm(0.975)
+
+# intervalo de confianza
+error_estandar <- sqrt(mom_varianza_log) / sqrt(n)
+ic_lower <- mom_media_log - z * error_estandar
+ic_upper <- mom_media_log + z * error_estandar
+
+print(paste("Intervalo de confianza del 95% para la media:", round(ic_lower, 3), "a", round(ic_upper, 3)))
+
+```
+
+```
+Este resultado nos indica que estamos al 95% seguros de que la media de nuestros valores tras la transformacion logarítmica se encuentra entre 1.667 y 1.743
+Para tranformarlos a escala real solo tendríamos que deshacer el logaritmo ( e^1.667 = 5.30 y e^1.743 = 5.70) lo que significa que estamos al 95% seguros de que la media se encuentra entre 5.3 y 5.7
+En este caso observamos que el intervalo [5.3 , 5.7] es estrecho por lo que tenemos una buena estimación de la media.
+
