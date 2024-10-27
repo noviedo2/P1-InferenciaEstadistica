@@ -50,8 +50,16 @@ set.seed(1234)
 mushroom.muestra <- Mushroom[sample(1:n_obs, 1000, TRUE), ]
 ```
 
-La muestra del dataset Mushroom es el siguiente:
-`r mushroom.muestra`
+La muestra del dataset Mushroom es la siguiente:
+
+```{r}
+head(mushroom.muestra)
+```
+
+```{r}
+tail(mushroom.muestra)
+```
+
 
 ## Tipo de variables
 ```{r}
