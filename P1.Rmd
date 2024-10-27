@@ -99,11 +99,108 @@ summary(mushroom.muestra)
 
 
 ## Ejercicio 3
+Vamos a estudiar la variable `Spore` del dataset.
 ```{r}
-table(mushroom.muestra$CapColor)
+tabla_frecuencias_type <- mushroom.muestra |>
+  count(Spore) |>
+  mutate(f = n / nrow(mushroom.muestra), N = cumsum(n), F = cumsum(f))
+tabla_frecuencias_ordenada3 <- tabla_frecuencias_type |>
+  arrange(desc(n))
+tabla_frecuencias_ordenada3$F <- cumsum(tabla_frecuencias_ordenada3$f)
+tabla_frecuencias_ordenada3$N <- cumsum(tabla_frecuencias_ordenada3$n)
+print(tabla_frecuencias_ordenada3)
+```
 
+Por la tabla de frecuencias se puede ver que el color `buff` es el más frecuente, con una fracuencia de 0,187.
+
+Resentando su frecuencia relativa obtenemos la siguiente tabla:
+```{r}
+mushroom.muestra  |> group_by(Spore) |>  summarise(Frequency = n()) |> mutate(Frequency = Frequency/sum(Frequency), Spore = reorder(Spore, -Frequency)) |> ggplot(aes(x = Spore, y = Frequency)) + geom_bar(stat = "identity", aes(fill = Frequency)) + scale_y_continuous(labels = scales::percent) + theme_bw() + labs(title = "Gráfico de barras con frecuencia relativa de Spore", x = "Color", y = "Frecuencia relativa") + scale_fill_gradient("Frecuencia", low = "olivedrab2", high = "burlywood3") + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Se puede ver que el color `buff` tiene casi un 20% al igual que el color `pink`
+
+```{r}
+mushroom.muestra |>
+  group_by(Spore) |>
+  summarise(Frequency = n()) |>
+  mutate(Spore = reorder(Spore, -Frequency)) |>
+  ggplot(aes(x = Spore, y = Frequency)) +
+  geom_bar(stat = "identity", aes(fill = Frequency)) +
+  theme_bw() +
+  labs(title = "Gráfico de barras con frecuencia absoluta de Spore",
+       x = "Color",
+       y = "Frecuencia absoluta") +
+  scale_fill_gradient("Frecuencia", low = "olivedrab2", high = "burlywood3") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Al representar la frecuecia absoluta obtenermos el mismo resultado pero en cantidades, casi 200 hongos del color `buff` y `pink`. 
+
+```{r}
 ggplot(data = mushroom.muestra) +
-  geom_bar(mapping = aes(x = CapColor))
+  geom_bar(mapping = aes(x = Spore))
+```
 
-mushroom.muestra%>%
-  count(CapColor)
+
+## Ejercicio 4
+Como no tenermos varaibles continuas, voy a pasar a caracter la vaeiable de `GillColor`, los números que van con los distintos colores no tiene ninguna relacion, estan puestos por orden.
+
+```{r}
+mushroom.muestra$GillColor.numeric <- ifelse(mushroom.muestra$GillColor == 'buff', 0, 
+ifelse(mushroom.muestra$GillColor == 'red', 1,
+ifelse(mushroom.muestra$GillColor == 'gray', 2,
+ifelse(mushroom.muestra$GillColor == 'chocolate',3,
+ifelse(mushroom.muestra$GillColor == 'black',4, 
+ifelse(mushroom.muestra$GillColor == 'brown', 5,
+ifelse(mushroom.muestra$GillColor == 'orange', 6, 
+ifelse(mushroom.muestra$GillColor == 'pink', 7,
+ifelse(mushroom.muestra$GillColor == 'green', 8,
+ifelse(mushroom.muestra$GillColor == 'purple', 9,
+ifelse(mushroom.muestra$GillColor == 'white', 10, 
+ifelse(mushroom.muestra$GillColor == 'yellow', 11, NA))))))))))))
+
+mushroom.muestra |> descr(GillColor.numeric)
+```
+
+```{r}
+tabla_frecuencias_gillcolor <- mushroom.muestra %>%
+  count(GillColor.numeric) %>%
+  mutate(f = n / nrow(mushroom.muestra))
+
+tabla_frecuencias_gillcolor <- tabla_frecuencias_gillcolor %>%
+  mutate(intervalo = cut(GillColor.numeric, breaks = pretty(GillColor.numeric, n = 10), right = FALSE)) %>%
+  group_by(intervalo) %>%
+  summarise(n = sum(n), 
+            f = sum(f))
+
+tabla_frecuencias_gillcolor <- tabla_frecuencias_gillcolor %>%
+  mutate(N = cumsum(n),
+         F = cumsum(f))
+
+tabla_frecuencias_ordenada4 <- tabla_frecuencias_gillcolor %>%
+  arrange(intervalo)
+
+print(tabla_frecuencias_ordenada4)
+
+```
+
+Representacion de `GillColor.numeri` repecto a su frecuencia
+```{r}
+ggplot(data = mushroom.muestra) +
+  geom_histogram(mapping = aes(x = GillColor.numeric), binwidth = 1) +
+  geom_bar(fill = "gold3") 
+```
+
+Si representamos su densidad tenemos la siguiente gráfica:
+```{r}
+ggplot(mushroom.muestra, aes(x = GillColor.numeric)) +
+geom_density() +
+ggtitle('Color de la muestra de Mushroom')
+```
+
+Ahora representamos su distribución.
+```{r}
+ggplot(data = mushroom.muestra) +
+  geom_histogram(mapping = aes(x = log(GillColor.numeric)), binwidth = .1)
+```
