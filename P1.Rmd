@@ -227,8 +227,6 @@ ggplot(data = mushroom.muestra) +
 
 # Ejercicio 5
 
-Antes de obtener el EVM, filtramos valores nulos de nuestros datos ya que no representan una parte relevante de la muestra  y mantenemos la integridad de nuestra muestra sin modificar los valores. 
-
 ```{r}
 
 mushroom_filtrado <- mushroom.muestra %>%
@@ -314,6 +312,7 @@ Para tranformarlos a escala real solo tendríamos que deshacer el logaritmo ( e^
 En este caso observamos que el intervalo [5.3 , 5.7] es estrecho por lo que tenemos una buena estimación de la media.
 
 # Ejercicio 8
+
 Teniendo `GillColor.numeric` como variabe continua, se va a representar en base al `habitat` en el que se encuenta cada tipo de hongo.
 
 ```{r}
