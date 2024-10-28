@@ -89,6 +89,7 @@ Estudiando el tipo de variables que tiene este dataset, sabemos que hay `r var_d
 ```{r echo = FALSE}
 summary(Mushroom)
 ```
+Viendo los datos del dataset, se puede ver que hay variables que se podrian considerar irrelevantes, como `VeilType`, ya que tiene solo una característica; y tambien se podria contar como irrelevante `Population`, ya que en sus características hay demasiados NA.
 
 # Ejercicio 2
 ```{r}
