@@ -312,7 +312,6 @@ Para tranformarlos a escala real solo tendríamos que deshacer el logaritmo ( e^
 En este caso observamos que el intervalo [5.3 , 5.7] es estrecho por lo que tenemos una buena estimación de la media.
 
 # Ejercicio 8
-
 Teniendo `GillColor.numeric` como variabe continua, se va a representar en base al `habitat` en el que se encuenta cada tipo de hongo.
 
 ```{r}
@@ -329,8 +328,12 @@ df = mushroom.muestra %>%
 
 Comparando sus boxplots obtenemos
 ```{r}
-ggplot(df, aes(Habitat, log.GillColor.numeric)) +
-        geom_boxplot()
+ggplot(mushroom.muestra, aes(x = Habitat, y = GillColor.numeric, fill = Habitat)) +
+  geom_boxplot() +
+  labs(title = "Distribución de Edad por Género",
+       x = "Habitat",
+       y = "Color") +
+  theme_minimal()
 ```
 
 Tabla de frecuencias
