@@ -311,6 +311,23 @@ Este resultado nos indica que estamos al 95% seguros de que la media de nuestros
 Para tranformarlos a escala real solo tendríamos que deshacer el logaritmo ( e^1.667 = 5.30 y e^1.743 = 5.70) lo que significa que estamos al 95% seguros de que la media se encuentra entre 5.3 y 5.7
 En este caso observamos que el intervalo [5.3 , 5.7] es estrecho por lo que tenemos una buena estimación de la media.
 
+# Ejercicio 7
+
+Vamos a calcular la probabilidad de que el logaritmo de `GillColor.numeric` sea superior a la suma de la media y de la desviación estandar, para calcular la probabilidad hacemos una simulación de 100000 simulaciones para que sea lo más preciso posible.
+```{r}
+mu <- mom_media_log
+sigma <- sqrt(mom_varianza_log)
+valor_fijo <- mu + sigma
+
+n_sim <- 1000000 
+
+valores_simulados <- rnorm(n_sim, mean = mu, sd = sigma)
+probabilidad <- mean(valores_simulados > valor_fijo)
+
+cat("La probabilidad de que el valor sea superior a", valor_fijo, "es aproximadamente:", probabilidad, "\n")
+
+```
+
 # Ejercicio 8
 Teniendo `GillColor.numeric` como variabe continua, se va a representar en base al `habitat` en el que se encuenta cada tipo de hongo.
 
