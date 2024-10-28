@@ -228,6 +228,35 @@ ggplot(data = mushroom.muestra) +
 
 
 # Ejercicio 5
+Para poder obtener el estimador de máxima verosimulitud de una forma practica hay que aplicar la siguiente formula:
+$$
+\hat \theta (x) = \max_{\theta \in \Theta} L(\theta|x)
+$$
+Por la representación de la disctribición se asume que una distribución normal, la cual tiene la siguiente forma 
+$$
+f(x_i;\mu, \sigma ^2) = {1 \over {\sqrt {2\pi \sigma ^2}}} \exp \left ( - { {(x_i - \mu)^2}\over {2\sigma^2}} \right )
+$$
+
+Teniendo esto sabemos que la fución de verosimilitud tiene la forma 
+$$
+L(\mu, \sigma^2|\mathbf x) = \prod_{i = 1}^n {{1 \over {\sqrt {2\pi \sigma ^2}}} \exp \left ( - { {(x_i - \mu)^2}\over {2\sigma^2}} \right )}
+$$
+
+Aplicamos el log-verosimilitud
+$$
+l(\mu, \sigma^2|\mathbf x) = \sum_{i = 1}^n \left [ - {1\over {2}} \log (2\pi \sigma^2) - {{(x_i - \mu)^2}\over {2\sigma^2}} \right ]
+$$
+Ahora se calculan las derivadas de $\mu$ y de $\sigma^2$ y las igualamos a cero
+Primero calculamos la derivada respecto a la variable $\mu$
+$$
+{ {\partial l}\over {\partial \mu} } = \sum_{i = 1}^n {{x_i - \mu}\over {\sigma^2}} = 0 \implies \hat \mu = {1 \over n} \sum_{i = 1}^n x_i
+$$
+
+Ahora calculamos la derivada respecto a $\sigma^2$
+$$
+{ {\partial l}\over {\partial \sigma^2} } = -{n \over {2\sigma^2}} + {1 \over {2\sigma^4}} \sum_{i = 1}^n (x_i - \mu)^2 = 0 \implies \hat \sigma^2 = {1 \over n} \sum_{i = 1}^n (x_i - \hat \mu)^2
+$$
+Viendo esto podemos saber que los estimadores de máxima verosimilitud son la media muestral y la varianza muestral.
 
 ```{r}
 
