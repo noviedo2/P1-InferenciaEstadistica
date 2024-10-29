@@ -485,18 +485,5 @@ Habitatmeadows: El efecto del hábitat de prados sobre el color de las setas es 
 
 Habitaturban, Habitatwaste: Estos dos tipos de hábitat no tienen un impacto significativo en el color de las setas.
 
-# Ejercicio 9
-
-Para analizar si el hábitat tiene un efecto significativo sobre el color de las branquias de los hongos, planteamos un contraste de hipótesis en el que la hipótesis nula establece que el color de las branquias (GillColor.numeric) no varía de manera significativa entre hábitats, mientras que la hipótesis alternativa sugiere que sí existen diferencias notables en el color según el hábitat.
-
-Emplearemos un análisis ANOVA para comparar las medias de nuestra variable continua con de varios grupos categóricos, en este caso, los distintos hábitats. 
-
-
-```{r}
-anova_result <- aov(GillColor.numeric ~ Habitat, data = mushroom.muestra)
-summary(anova_result)
-
-```
-
 
 
