@@ -518,6 +518,24 @@ cat("La probabilidad de que el valor sea superior a", valor_fijo, "es aproximada
 Teniendo `GillColor.numeric` como variabe continua, se va a representar en base al `habitat` en el que se encuenta cada tipo de hongo.
 
 ```{r}
+set.seed(1234)
+mushroom.muestra <- Mushroom[sample(1:n_obs, 1000, TRUE), ]
+
+
+mushroom.muestra$GillColor.numeric <- ifelse(mushroom.muestra$GillColor == 'buff', 0, 
+                                      ifelse(mushroom.muestra$GillColor == 'red', 1,
+                                      ifelse(mushroom.muestra$GillColor == 'gray', 2,
+                                      ifelse(mushroom.muestra$GillColor == 'chocolate',3,
+                                      ifelse(mushroom.muestra$GillColor == 'black',4, 
+                                      ifelse(mushroom.muestra$GillColor == 'brown', 5,
+                                      ifelse(mushroom.muestra$GillColor == 'orange', 6, 
+                                      ifelse(mushroom.muestra$GillColor == 'pink', 7,
+                                      ifelse(mushroom.muestra$GillColor == 'green', 8,
+                                      ifelse(mushroom.muestra$GillColor == 'purple', 9,
+                                      ifelse(mushroom.muestra$GillColor == 'white', 10, 
+                                      ifelse(mushroom.muestra$GillColor == 'yellow', 11, NA))))))))))))
+
+mushroom.muestra |> descr(GillColor.numeric)
 names(mushroom.muestra)
 
 ```
