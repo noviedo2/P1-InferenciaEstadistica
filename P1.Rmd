@@ -322,6 +322,8 @@ lines(density(teorica_gillcolor), col = "darkgreen", lwd = 2)
 par(mfrow = c(1, 1))
 
 ```
+Al analizar ambas gráficas podemos observar que la distribución muestral de la variable "GillColor" presenta múltiples picos y valles, lo que sugiere una distribución multimodal o la presencia de varias subpoblaciones. En contraste, la distribución teórica sigue una forma más suave y simétrica, similar a una distribución normal. Esta comparación es relevante porque permite evaluar cómo se ajusta la muestra real a la distribución teórica esperada.
+
 
 ```{r}
 
