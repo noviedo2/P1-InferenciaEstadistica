@@ -121,6 +121,7 @@ summary(mushroom.muestra)
 
 
 # Ejercicio 3
+
 Vamos a estudiar la variable `Spore` del dataset.
 ```{r}
 tabla_frecuencias_type <- mushroom.muestra |>
@@ -297,49 +298,101 @@ La curva negra superpuesta al histograma es una estimación de la densidad de pr
 
 # Ejercicio 6
 
+
+## Estimación de la Media utilizando el Método de los Momentos
+
+Para estimar la media poblacional \( \mu \) de una variable aleatoria continua \( X \) que sigue una distribución normal \( N(\mu, \sigma^2) \), aplicamos el **método de los momentos**. Este método consiste en igualar el primer momento teórico de la distribución a su primer momento muestral.
+
+Recordemos que el **primer momento teórico** (la media) de \( X \sim N(\mu, \sigma^2) \) es \( \mathbb{E}[X] = \mu \). Por otro lado, el **primer momento muestral** de una muestra \( x_1, x_2, \dots, x_n \) es:
+
+\[
+\bar{x} = \frac{1}{n} \sum_{i=1}^n x_i
+\]
+
+Para aplicar el método de los momentos, igualamos la media teórica con la media muestral:
+
+\[
+\mathbb{E}[X] = \bar{x} \Rightarrow \mu = \bar{x}
+\]
+
+Así, el estimador del primer momento (la media \( \mu \)) es simplemente la **media muestral** \( \hat{\mu} = \bar{x} \).
+
+## Cálculo del Estimador en la Muestra
+
+Dado un conjunto de datos muestrales \( x_1, x_2, \dots, x_n \), el valor del estimador \( \hat{\mu} \) es:
+
+\[
+\hat{\mu} = \frac{1}{n} \sum_{i=1}^n x_i
+\]
+
+## Intervalo de Confianza para la Media
+
+Para construir un **intervalo de confianza del 95%** para la media \( \mu \), asumimos que la distribución de \( \hat{\mu} \) sigue una normal \( N\left(\mu, \frac{\sigma^2}{n}\right) \). Esto implica que un intervalo de confianza del 95% para \( \mu \) está dado por:
+
+\[
+\left( \hat{\mu} - z \cdot \frac{\sigma}{\sqrt{n}}, \hat{\mu} + z \cdot \frac{\sigma}{\sqrt{n}} \right)
+\]
+
+donde \( z \) es el valor crítico correspondiente al nivel de confianza (1.96 para el 95%), \( \sigma \) es la desviación estándar poblacional (o su estimador en la muestra), y \( n \) es el tamaño de la muestra. Si no conocemos \( \sigma \), podemos reemplazarlo con la desviación estándar muestral \( s \).
+
+En la práctica, el intervalo de confianza del 95% para \( \mu \) en función de la desviación estándar muestral \( s \) y la media muestral \( \hat{\mu} \) se calcula como:
+
+\[
+\left( \hat{\mu} - 1.96 \cdot \frac{s}{\sqrt{n}}, \hat{\mu} + 1.96 \cdot \frac{s}{\sqrt{n}} \right)
+\]
+
+Este intervalo nos da un rango en el cual podemos estar 95% seguros de que se encuentra la verdadera media poblacional \( \mu \).
+
+
+
+
+
 ```{r}
 
-mushroom_filtrado <- mushroom.muestra %>%
-  filter(GillColor.numeric > 0)
 
-#transformación logarítmica
-mushroom_filtrado$GillColor.log <- log(mushroom_filtrado$GillColor.numeric)
+# Función para calcular la media y el intervalo de confianza
+calcular_media_y_intervalo <- function(mushroom.muestra) {
+  # Tamaño de la muestra
+  n <- length(mushroom.muestra)
+  
+  # Calcular la media muestral
+  mu_hat <- mean(mushroom.muestra)
+  
+  # Calcular la desviación estándar muestral
+  s <- sd(mushroom.muestra)
+  
+  # Calcular el valor crítico z para un intervalo de confianza del 95%
+  z <- 1.96
+  
+  # Calcular el margen de error
+  margen_error <- z * (s / sqrt(n))
+  
+  # Calcular el intervalo de confianza
+  intervalo_confianza <- c(mu_hat - margen_error, mu_hat + margen_error)
+  
+  # Resultados
+  return(list(media_muestral = mu_hat,
+              desviacion_estandar = s,
+              intervalo_confianza = intervalo_confianza))
+}
 
-#media y varianza de la muestra con el método de los momentos
-mom_media_log <- mean(mushroom_filtrado$GillColor.log)  # Media muestral
-mom_varianza_log <- var(mushroom_filtrado$GillColor.log) #Varianza muestral
+# Ejemplo de uso
+# Generar una muestra aleatoria de datos normales
+set.seed(123)  # Para reproducibilidad
+mushroom.muestra <- rnorm(30, mean = 50, sd = 10)  # Muestra de tamaño 30, media 50, desviación estándar 10
 
-print(paste("Estimador de la media (Momento 1) de log(GillColor.numeric):", mom_media_log))
-print(paste("Estimador de la varianza (Momento 2) de log(GillColor.numeric):", mom_varianza_log))
+# Llamar a la función
+resultados <- calcular_media_y_intervalo(mushroom.muestra)
+
+# Imprimir resultados
+print(paste("Media Muestral (mu_hat):", round(resultados$media_muestral, 2)))
+print(paste("Desviación Estándar Muestral (s):", round(resultados$desviacion_estandar, 2)))
+print(paste("Intervalo de Confianza del 95%:", 
+            round(resultados$intervalo_confianza[1], 2), 
+            "a", 
+            round(resultados$intervalo_confianza[2], 2)))
 
 ```
-
-
-Como podemos observar, nuestro estimador de la media 𝜇es igual a 1.7048, este valor es obtenido tras aplicar la transformacion logaritmica por lo que en nuesra escala original tendrían un valor medio de 4,93.
-
-Nuestro estimador de varianza σ^2 es igual a 0.3053. Este valor mide la dispersion de los datos, al no ser elevado, nos sugiere que nuestros datos están cerca de la media.
-
-
-
-```{r}
-
-n <- nrow(mushroom_filtrado) # Calculamos tamaño de la muestra
-
-# Nivel de confianza del 95%
-z <- qnorm(0.975)
-
-# intervalo de confianza
-error_estandar <- sqrt(mom_varianza_log) / sqrt(n)
-ic_lower <- mom_media_log - z * error_estandar
-ic_upper <- mom_media_log + z * error_estandar
-
-print(paste("Intervalo de confianza del 95% para la media:", round(ic_lower, 3), "a", round(ic_upper, 3)))
-
-```
-
-Este resultado nos indica que estamos al 95% seguros de que la media de nuestros valores tras la transformacion logarítmica se encuentra entre 1.667 y 1.743
-Para tranformarlos a escala real solo tendríamos que deshacer el logaritmo ( e^1.667 = 5.30 y e^1.743 = 5.70) lo que significa que estamos al 95% seguros de que la media se encuentra entre 5.3 y 5.7
-En este caso observamos que el intervalo [5.3 , 5.7] es estrecho por lo que tenemos una buena estimación de la media.
 
 # Ejercicio 7
 
@@ -366,6 +419,15 @@ ggplot(mushroom.muestra, aes(x = log(GillColor.numeric), colour = Habitat)) +
   geom_density(lwd=2, linetype=1)
 ```
 
+
+La imagen nos muestra la distribucion de los colores de nuestras setas para cada tipo de hábitat, y cada linea representa la densidad de probabilidad para cada hábitat.
+
+Por ejemplo, podemos observar que  los hongos que viven en 'woods' tienen una distribución de 'GillColor' que se concentra en valores más altos, mientras que los hongos que viven en 'waste' tienen una distribución más dispersa. Recordemos que los colores fueron transformados a valores numéricos por lo que podemos concluir que los hongos que viven en woods tiennden a tener colores  como verde, morado blanco, mientras que hongos en waste no tienen una tendencia clara y los podemos encontrar decualquier color.
+
+
+
+
+
 Relacion entre estas dos variables.
 ```{r}
 df = mushroom.muestra %>% 
@@ -383,12 +445,26 @@ ggplot(mushroom.muestra, aes(x = Habitat, y = GillColor.numeric, fill = Habitat)
   theme_minimal()
 ```
 
+
+En este caso usamos un boxplot para representar la misma conparacion que en el histograma anterior y confirmar las conclusiones obtenidas. 
+
+Igual que en el histograma, podemos concluir en que los hongos que viven en 'waste' tienen una distribución dispersa mientras que por ejemplo en woods obtenemos valores más altos de la variable color.
+
+
+
 Tabla de frecuencias
 ```{r}
 kable(table(mushroom.muestra$GillColor.numeric, mushroom.muestra$Habitat))
 
 kable(prop.table(table(mushroom.muestra$GillColor.numeric, mushroom.muestra$Habitat)), digits = 6)
 ```
+
+En esta tabla podemos observar la frecuencia de distintos colores en diferentes hábitats.
+
+Por ejemplo, en el hábitat woods podemos observar que predomina el color 7 (pink) con 83 observaciones, aunque tambien tenemos un número alto de observaciones en los colores 9 y 10 (morado y blanco).
+
+En cambio, para el hábitat urbano (urban) podemos observar una falta de observaciones, lo que puede indicar un menor número de hongos y entre los cuales destacan los colores 5 y 7 (marron y rosa) con un valor de 12.
+
 
 Datos sobre el conjunto de las dos variables
 ```{r}
@@ -397,3 +473,30 @@ lineal_1 <- mushroom.muestra |>
   with(lm(GillColor.numeric ~ Habitat))  
 summary(lineal_1)
 ```
+
+
+El análisis de regresión lineal realizado muestra que existe una relación significativa entre el color de las setas y el tipo de hábitat en el que viven.
+
+El intercept de 6.13366 indica que el color referencia  es de 6.13366 unidades, es decir color naranja.
+
+Habitatgrasses, Habitatleaves, Habitatpaths: Estos tres tipos de hábitat tienen una influencia negativa significativa en el color lo que significa que los hongos que viven en estos hábitats tienden a tener un colormás bajo que los hognos que viven en el hábitat de referencia. (rojo,gris,  marron, negro, chocolate, naranja)
+
+Habitatmeadows: El efecto del hábitat de prados sobre el color de las setas es  no es tan fuerte como en los otros hábitats.
+
+Habitaturban, Habitatwaste: Estos dos tipos de hábitat no tienen un impacto significativo en el color de las setas.
+
+# Ejercicio 9
+
+Para analizar si el hábitat tiene un efecto significativo sobre el color de las branquias de los hongos, planteamos un contraste de hipótesis en el que la hipótesis nula establece que el color de las branquias (GillColor.numeric) no varía de manera significativa entre hábitats, mientras que la hipótesis alternativa sugiere que sí existen diferencias notables en el color según el hábitat.
+
+Emplearemos un análisis ANOVA para comparar las medias de nuestra variable continua con de varios grupos categóricos, en este caso, los distintos hábitats. 
+
+
+```{r}
+anova_result <- aov(GillColor.numeric ~ Habitat, data = mushroom.muestra)
+summary(anova_result)
+
+```
+
+
+
