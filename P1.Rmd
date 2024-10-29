@@ -503,7 +503,7 @@ ggplot() +
 
 ```
 
-
+La imagen muestra una comparación entre la distribución muestral y la distribución teórica del atributo "GillColor (numérico)" del dataset "mushroom". Utilizando el método de los momentos, se observa que la media muestral es 49.53 y la desviación estándar muestral es 9.81. El intervalo de confianza del 95% para la media muestral va de 46.02 a 53.04. Estos resultados indican que la media muestral está bastante cerca de la media teórica, y el intervalo de confianza relativamente estrecho sugiere una estimación precisa de la media poblacional. La similitud entre las distribuciones muestral y teórica refuerza la validez de los datos y sugiere que no hay sesgos significativos en la muestra.
 
 # Ejercicio 7
 
