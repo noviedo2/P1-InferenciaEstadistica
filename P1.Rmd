@@ -361,6 +361,12 @@ ggplot(df_medias, aes(x = medias_muestrales)) +
 
 ```
 
+El histograma está superpuesto con una curva de densidad teórica en rojo, que representa una distribución normal con la media y la desviación estándar teórica de las medias muestrales.
+En el eje x se encuentran las "Medias Muestrales" y en el eje y la "Densidad" lo que nos permite comparar visualmente la distribución empírica de las medias muestrales con la distribución teórica esperada.
+
+
+
+
 
 
 
