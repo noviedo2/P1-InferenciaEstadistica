@@ -379,10 +379,10 @@ calcular_media_y_intervalo <- function(mushroom.muestra) {
 # Ejemplo de uso
 # Generar una muestra aleatoria de datos normales
 set.seed(123)  # Para reproducibilidad
-mushroom.muestra <- rnorm(30, mean = 50, sd = 10)  # Muestra de tamaño 30, media 50, desviación estándar 10
+mushroom.muestra1 <- rnorm(30, mean = 50, sd = 10)  # Muestra de tamaño 30, media 50, desviación estándar 10
 
 # Llamar a la función
-resultados <- calcular_media_y_intervalo(mushroom.muestra)
+resultados <- calcular_media_y_intervalo(mushroom.muestra1)
 
 # Imprimir resultados
 print(paste("Media Muestral (mu_hat):", round(resultados$media_muestral, 2)))
