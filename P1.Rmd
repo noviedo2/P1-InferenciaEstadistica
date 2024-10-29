@@ -460,6 +460,43 @@ print(paste("Intervalo de Confianza del 95%:",
 
 ```
 
+
+```{r}
+
+# Cálculo del estimador utilizando el método de los momentos
+mu_hat <- mean(gillcolor_data, na.rm = TRUE)
+s <- sd(gillcolor_data, na.rm = TRUE)
+
+# Generar datos de la distribución normal teórica
+n <- length(gillcolor_data)  # Tamaño de la muestra
+teorica_gillcolor <- rnorm(1000, mean = mu_hat, sd = s)
+
+# Comparación gráfica de la distribución muestral y la distribución teórica
+ggplot() +
+  # Histograma de la distribución muestral
+  geom_histogram(aes(x = gillcolor_data, y = ..density..), 
+                 bins = 30, fill = "lightblue", color = "black", alpha = 0.7) +
+  # Densidad de la distribución muestral
+  geom_density(aes(x = gillcolor_data), color = "blue", size = 1) +
+  # Densidad de la distribución teórica
+  geom_density(aes(x = teorica_gillcolor), color = "red", size = 1) +
+  # Líneas para la media muestral y teórica
+  geom_vline(xintercept = mu_hat, color = "blue", linetype = "dashed", size = 1) +
+  geom_vline(xintercept = mean(teorica_gillcolor), color = "red", linetype = "dashed", size = 1) +
+  labs(title = "Comparación D.Muestral y la D.Teórica",
+       x = "GillColor (numérico)",
+       y = "Densidad") +
+  theme_minimal() +
+  theme(legend.position = "top") +
+  scale_color_manual(values = c("blue" = "Distribución Muestral", "red" = "Distribución Teórica")) +
+  guides(color = guide_legend(title = "Leyenda")) +
+  annotate("text", x = mu_hat, y = 0.02, label = " ", color = "blue", vjust = -1.5) +
+  annotate("text", x = mean(teorica_gillcolor), y = 0.02, label = " ", color = "red", vjust = -1.5)
+
+```
+
+
+
 # Ejercicio 7
 
 Vamos a calcular la probabilidad de que el logaritmo de `GillColor.numeric` sea superior a la suma de la media y de la desviación estandar, para calcular la probabilidad hacemos una simulación de 100000 simulaciones para que sea lo más preciso posible.
