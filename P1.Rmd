@@ -487,3 +487,38 @@ Habitaturban, Habitatwaste: Estos dos tipos de hábitat no tienen un impacto sig
 
 
 
+
+# Ejercicio 9
+
+##Contraste de Hipótesis
+
+Queremos determinar si existen diferencias significativas en GillColor.numeric entre los diferentes tipos de hábitats.
+Usaremos las siguientes hipótesis:
+
+### Hipotesis nula :
+No hay diferencias significativas en el color de las setas entre los diferentes tipos de hábitat.
+
+### Hipotesis Alternativa:
+Sí existen diferencias significativas en el color de las setas entre los distintos hábitats.
+
+## Resolución del Contraste
+Para llevar a cabo el contraste, seleccionamos un nivel de significancia α=0.05. Esto implica que aceptamos un 5% de probabilidad de rechazar la hipótesis nula cuando es verdadera.
+
+A continuación, realizamos un análisis de varianza (ANOVA) utilizando R para evaluar si el tipo de hábitat tiene un efecto significativo en el color de las láminas.
+
+```{r}
+# Cargar librería necesaria
+library(dplyr)
+
+# Ajustar el modelo de regresión lineal
+modelo <- lm(GillColor.numeric ~ Habitat, data = mushroom.muestra)
+
+# Realizar el análisis de varianza
+resultado_anova <- anova(modelo)
+
+# Ver los resultados
+print(resultado_anova)
+
+```
+
+La tabla muestra que el valor p asociado al efecto del hábitat es menor que 2.2×10^−16, lo cual es extremadamente significativo por lo que rechazamos la hipótesis nula, concluyendo que el hábitat sí tiene un efecto significativo sobre el color de los hongos.
