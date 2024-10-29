@@ -259,6 +259,7 @@ $$
 $$
 Viendo esto podemos saber que los estimadores de máxima verosimilitud son la media muestral y la varianza muestral.
 
+
 ```{r}
 
 mushroom_filtrado <- mushroom.muestra %>%
@@ -276,25 +277,80 @@ print(paste("Desviación estándar de log(GillColor.numeric):", emv_desv_log))
 
 ```
 
-
-Antes de obtener el EVM, filtramos valores nulos de nuestros datos ya que no representan una parte relevante de la muestra  y mantenemos la integridad de nuestra muestra sin modificar los valores. 
-
-
 ```{r}
 
-# Comparación gráfica
+# Calculamos el EMV para la media (media muestral) y la desviación estándar de 'GillColor.numeric'
+EMV_mu_gillcolor <- mean(gillcolor_data, na.rm = TRUE)
+EMV_sigma_gillcolor <- sd(gillcolor_data, na.rm = TRUE)
 
-ggplot(mushroom_filtrado, aes(x = GillColor.log)) +
-  geom_histogram(aes(y = ..density..), binwidth = 0.1, fill = "lightgreen", alpha = 0.7) +
-  stat_function(fun = dnorm, args = list(mean = emv_media_log, sd = emv_desv_log))+
-  xlab("log(GillColor.numeric)") +
-  ylab("Densidad")
+# Mostramos los valores del EMV para la media y desviación estándar de 'GillColor.numeric'
+cat("Estimador de máxima verosimilitud (EMV) para 'GillColor.numeric':\n")
+cat("Media =", EMV_mu_gillcolor, ", Desviación estándar =", EMV_sigma_gillcolor, "\n\n")
+
+# Generamos muestras teóricas de una distribución normal usando los parámetros estimados
+set.seed(123) # Asegurar reproducibilidad
+teorica_gillcolor <- rnorm(length(gillcolor_data), mean = EMV_mu_gillcolor, sd = EMV_sigma_gillcolor)
+
+# Comparación gráfica de la distribución muestral y teórica para 'GillColor.numeric'
+par(mfrow = c(1, 2)) # Configurar panel de gráficos
+
+# Distribución muestral de 'GillColor.numeric'
+hist(gillcolor_data, 
+     main = "Distribución muestral de 'GillColor.numeric'", 
+     xlab = "GillColor (numérico)", 
+     col = "lightblue", 
+     border = "white", 
+     probability = TRUE)
+lines(density(gillcolor_data, na.rm = TRUE), col = "darkblue", lwd = 2)
+
+# Distribución teórica de 'GillColor.numeric'
+hist(teorica_gillcolor, 
+     main = "Distribución teórica de 'GillColor.numeric'", 
+     xlab = "GillColor (numérico)", 
+     col = "lightgreen", 
+     border = "white", 
+     probability = TRUE)
+lines(density(teorica_gillcolor), col = "darkgreen", lwd = 2)
+
+# Restauramos el panel de gráficos a la configuración por defecto
+par(mfrow = c(1, 1))
 
 ```
 
-Este histograma muestra la distribucion de la variable "GillColor.numeric".
-La curva negra superpuesta al histograma es una estimación de la densidad de probabilidad de la distribución de la variable transformada y nos permite estimar la probabilidad de que la variable tome  un valor determinado.
 
+```{r}
+# Cargar las librerías necesarias
+library(dplyr)
+library(ggplot2)
+
+# Filtrar las observaciones con valores cero en GillColor.numeric
+mushroom_filtrado <- mushroom.muestra %>%
+  filter(GillColor.numeric > 0)
+
+# Transformación logarítmica
+mushroom_filtrado$GillColor.log <- log(mushroom_filtrado$GillColor.numeric)
+
+# Calcular el EMV de la media y la varianza (desviación estándar)
+emv_media_log <- mean(mushroom_filtrado$GillColor.log)
+emv_var_log <- var(mushroom_filtrado$GillColor.log)  # Varianza muestral
+emv_desv_log <- sqrt(emv_var_log)  # Desviación estándar
+
+# Imprimir los resultados
+print(paste("Estimador de máxima verosimilitud de la media (EMV) de log(GillColor.numeric):", emv_media_log))
+print(paste("Estimador de máxima verosimilitud de la desviación estándar de log(GillColor.numeric):", emv_desv_log))
+
+# Comparar la distribución muestral con la distribución teórica
+# Histograma de la variable logarítmica
+ggplot(mushroom_filtrado, aes(x = GillColor.log)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "lightblue", alpha = 0.7) +
+  stat_function(fun = dnorm, args = list(mean = emv_media_log, sd = emv_desv_log), 
+                color = "red", size = 1) +
+  labs(title = "Distribución Muestral vs. Distribución Teórica",
+       x = "log(GillColor.numeric)",
+       y = "Densidad") +
+  theme_minimal()
+
+```
 
 # Ejercicio 6
 
