@@ -398,8 +398,8 @@ print(paste("Intervalo de Confianza del 95%:",
 
 Vamos a calcular la probabilidad de que el logaritmo de `GillColor.numeric` sea superior a la suma de la media y de la desviación estandar, para calcular la probabilidad hacemos una simulación de 100000 simulaciones para que sea lo más preciso posible.
 ```{r}
-mu <- mom_media_log
-sigma <- sqrt(mom_varianza_log)
+mu <- emv_media_log
+sigma <- sqrt(emv_desv_log)
 valor_fijo <- mu + sigma
 
 n_sim <- 1000000 
