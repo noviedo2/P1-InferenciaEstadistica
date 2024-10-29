@@ -594,7 +594,7 @@ Habitaturban, Habitatwaste: Estos dos tipos de hábitat no tienen un impacto sig
 
 # Ejercicio 9
 
-##Contraste de Hipótesis
+## Contraste de Hipótesis
 
 Queremos determinar si existen diferencias significativas en GillColor.numeric entre los diferentes tipos de hábitats.
 Usaremos las siguientes hipótesis:raste
@@ -603,8 +603,6 @@ Para llevar a cabo el contraste, seleccionamos un nivel de significancia α=0.05
 A continuación, realizamos un análisis de varianza (ANOVA) utilizando R para evaluar si el tipo de hábitat tiene un efecto significativo en el color de las láminas.
 
 ```{r}
-# Cargar librería necesaria
-library(dplyr)
 
 # Ajustar el modelo de regresión lineal
 modelo <- lm(GillColor.numeric ~ Habitat, data = mushroom.muestra)
