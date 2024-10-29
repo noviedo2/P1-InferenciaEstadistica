@@ -450,7 +450,7 @@ calcular_media_y_intervalo <- function(mushroom.muestra) {
               intervalo_confianza = intervalo_confianza))
 }
 
-# Ejemplo de uso
+
 # Generar una muestra aleatoria de datos normales
 set.seed(123)  # Para reproducibilidad
 mushroom.muestra1 <- rnorm(30, mean = 50, sd = 10)  # Muestra de tamaño 30, media 50, desviación estándar 10
