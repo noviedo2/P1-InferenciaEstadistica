@@ -171,17 +171,17 @@ Como no tenermos varaibles continuas, voy a pasar a caracter la vaeiable de `Gil
 
 ```{r}
 mushroom.muestra$GillColor.numeric <- ifelse(mushroom.muestra$GillColor == 'buff', 0, 
-ifelse(mushroom.muestra$GillColor == 'red', 1,
-ifelse(mushroom.muestra$GillColor == 'gray', 2,
-ifelse(mushroom.muestra$GillColor == 'chocolate',3,
-ifelse(mushroom.muestra$GillColor == 'black',4, 
-ifelse(mushroom.muestra$GillColor == 'brown', 5,
-ifelse(mushroom.muestra$GillColor == 'orange', 6, 
-ifelse(mushroom.muestra$GillColor == 'pink', 7,
-ifelse(mushroom.muestra$GillColor == 'green', 8,
-ifelse(mushroom.muestra$GillColor == 'purple', 9,
-ifelse(mushroom.muestra$GillColor == 'white', 10, 
-ifelse(mushroom.muestra$GillColor == 'yellow', 11, NA))))))))))))
+                                      ifelse(mushroom.muestra$GillColor == 'red', 1,
+                                      ifelse(mushroom.muestra$GillColor == 'gray', 2,
+                                      ifelse(mushroom.muestra$GillColor == 'chocolate',3,
+                                      ifelse(mushroom.muestra$GillColor == 'black',4, 
+                                      ifelse(mushroom.muestra$GillColor == 'brown', 5,
+                                      ifelse(mushroom.muestra$GillColor == 'orange', 6, 
+                                      ifelse(mushroom.muestra$GillColor == 'pink', 7,
+                                      ifelse(mushroom.muestra$GillColor == 'green', 8,
+                                      ifelse(mushroom.muestra$GillColor == 'purple', 9,
+                                      ifelse(mushroom.muestra$GillColor == 'white', 10, 
+                                      ifelse(mushroom.muestra$GillColor == 'yellow', 11, NA))))))))))))
 
 mushroom.muestra |> descr(GillColor.numeric)
 ```
@@ -415,8 +415,14 @@ cat("La probabilidad de que el valor sea superior a", valor_fijo, "es aproximada
 Teniendo `GillColor.numeric` como variabe continua, se va a representar en base al `habitat` en el que se encuenta cada tipo de hongo.
 
 ```{r}
+names(mushroom.muestra)
+
+```
+
+
+```{r}
 ggplot(mushroom.muestra, aes(x = log(GillColor.numeric), colour = Habitat)) +
-  geom_density(lwd=2, linetype=1)
+  geom_density(lwd = 2, linetype = 1) 
 ```
 
 
@@ -475,11 +481,6 @@ summary(lineal_1)
 ```
 
 
-El análisis de regresión lineal realizado muestra que existe una relación significativa entre el color de las setas y el tipo de hábitat en el que viven.
-
-El intercept de 6.13366 indica que el color referencia  es de 6.13366 unidades, es decir color naranja.
-
-Habitatgrasses, Habitatleaves, Habitatpaths: Estos tres tipos de hábitat tienen una influencia negativa significativa en el color lo que significa que los hongos que viven en estos hábitats tienden a tener un colormás bajo que los hognos que viven en el hábitat de referencia. (rojo,gris,  marron, negro, chocolate, naranja)
 
 Habitatmeadows: El efecto del hábitat de prados sobre el color de las setas es  no es tan fuerte como en los otros hábitats.
 
@@ -493,15 +494,7 @@ Habitaturban, Habitatwaste: Estos dos tipos de hábitat no tienen un impacto sig
 ##Contraste de Hipótesis
 
 Queremos determinar si existen diferencias significativas en GillColor.numeric entre los diferentes tipos de hábitats.
-Usaremos las siguientes hipótesis:
-
-### Hipotesis nula :
-No hay diferencias significativas en el color de las setas entre los diferentes tipos de hábitat.
-
-### Hipotesis Alternativa:
-Sí existen diferencias significativas en el color de las setas entre los distintos hábitats.
-
-## Resolución del Contraste
+Usaremos las siguientes hipótesis:raste
 Para llevar a cabo el contraste, seleccionamos un nivel de significancia α=0.05. Esto implica que aceptamos un 5% de probabilidad de rechazar la hipótesis nula cuando es verdadera.
 
 A continuación, realizamos un análisis de varianza (ANOVA) utilizando R para evaluar si el tipo de hábitat tiene un efecto significativo en el color de las láminas.
